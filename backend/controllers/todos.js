@@ -43,22 +43,6 @@ const updateTodo = async (req, res) => {
     res.status(500).json({ msg: error });
   }
 };
-const editTodo = async (req, res) => {
-  try {
-    const { id: todoID } = req.params;
-    const todo = await Todo.findByIdAndUpdate({ _id: todoID }, req.body, {
-      new: true,
-      runValidators: true,
-      overwrite: true,
-    });
-    if (!todo) {
-      return res.status(404).json({ msg: `No todo with id ${todoID}` });
-    }
-    res.status(200).json({ todo });
-  } catch (error) {
-    res.status(500).json({ msg: error });
-  }
-};
 const deleteTodo = async (req, res) => {
   try {
     const { id: todoID } = req.params;
@@ -71,5 +55,4 @@ const deleteTodo = async (req, res) => {
     res.status(500).json({ msg: error });
   }
 };
-export { getAllTodos, createTodo, getTodo, updateTodo, editTodo, deleteTodo };
-
+export { getAllTodos, createTodo, getTodo, updateTodo, deleteTodo };

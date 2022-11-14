@@ -3,27 +3,21 @@ const { Schema } = mongoose;
 
 const todoSchema = new Schema(
   {
-    name: {
+    text: {
       type: String,
-      required: [true, "Name area is required"],
+      required: [true, "Text area is required"],
       trim: true,
       lowercase: true,
-      maxlength: [20, "Name can't exceed 20 characters"],
+      maxlength: [30, "Text can't exceed 30 characters"],
     },
-    completed: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      default: "all",
     },
   },
   {
     timestamps: true,
   }
 );
-
-// todoSchema.pre("save", function (next) {
-//   const name = this;
-//   console.log(name);
-// });
-
 const Todo = mongoose.model("Todo", todoSchema);
 export default Todo;

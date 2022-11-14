@@ -1,8 +1,35 @@
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
 
 const App = () => {
+  const [todos, setTodos] = useState([]);
+  const [filterTodos, setFilterTodos] = useState([]);
+  const [status, setStatus] = useState("all");
+
+  useEffect(() => {
+    getTodos();
+    filterHandler();
+  }, [todos, status]);
+  const getTodos = async () => {
+    const url = "http://localhost:4000/api/v1/todos";
+    await axios(url).then((response) => setTodos(response.data.todos));
+  };
+
+  const filterHandler = () => {
+    switch (status) {
+      case "completed":
+        setFilterTodos(todos.filter((todo) => todo.status === "completed"));
+        break;
+      case "uncompleted":
+        setFilterTodos(todos.filter((todo) => todo.status === "uncompleted"));
+        break;
+      default:
+        setFilterTodos(todos);
+        break;
+    }
+  };
   return (
     <div className="App">
       <section className="vh-100">
@@ -13,11 +40,11 @@ const App = () => {
                 <div className="card-body py-4 px-4 px-md-5">
                   <p className="h1 text-center mt-3 mb-4 pb-3 text-primary">
                     <i className="fas fa-check-square me-1"></i>
-                    <u>My Todo's</u>
+                    <u>Todo Project</u>
                   </p>
-                  <Form />
+                  <Form setStatus={setStatus} />
                   <hr className="my-4"></hr>
-                  <TodoList />
+                  <TodoList filterTodos={filterTodos} setStatus={setStatus} />
                 </div>
               </div>
             </div>
